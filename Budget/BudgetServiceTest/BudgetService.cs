@@ -17,15 +17,40 @@ namespace BudgetServiceTest
             if (end < start)
                 return 0m;
 
-            var days = DateTime.DaysInMonth(start.Year, start.Month);
+            var beginMonth = start.Month;
 
-            var budget = StubBudgetRepo.GetAll()
-                .Where(x => x.Date == start.ToString("yyyyMM"))
-                .Select(x => x.Budget).FirstOrDefault();
+            decimal totalBudget = 0m;
 
-            var queryDays = (end.Day - start.Day) + 1;
+            for (var month = start.Month; month <= end.Month; month++)
+            {
+                var date = new DateTime(start.Year, month, 1);
 
-            return (budget / days) * queryDays;
+                var daysInMonth = DateTime.DaysInMonth(start.Year, month);
+
+                var startDay = 1;
+                if (month == start.Month)
+                {
+                    startDay = start.Day;
+                }
+
+                var endDay = daysInMonth;
+                if (month == end.Month)
+                {
+                    endDay = end.Day;
+                }
+
+                var queryDays = (endDay - startDay) + 1;
+
+                var budget = StubBudgetRepo.GetAll()
+                                           .Where(x => x.Date == date.ToString("yyyyMM"))
+                                           .Select(x => x.Budget).FirstOrDefault();
+
+                var money = budget / daysInMonth * queryDays;
+
+                totalBudget += money;
+            }
+
+            return totalBudget;
         }
     }
 }
