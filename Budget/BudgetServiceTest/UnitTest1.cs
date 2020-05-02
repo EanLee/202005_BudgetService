@@ -20,7 +20,17 @@ namespace BudgetServiceTest
                 new BudgetEntity
                 {
                      Date = "202004",
-                      Budget = 300,
+                     Budget = 300,
+                },
+                 new BudgetEntity
+                {
+                     Date = "202005",
+                     Budget = 310,
+                },
+                  new BudgetEntity
+                {
+                     Date = "202006",
+                     Budget = 300,
                 }
             });
             _budgetService = new BudgetService(_stubBudgetRepo);
@@ -56,7 +66,14 @@ namespace BudgetServiceTest
             Assert.AreEqual(50, budget);
 
         }
+        [Test]
+        public void 零預算()
+        {
+            var budget = _budgetService.Query(new DateTime(2020, 1, 1), new DateTime(2020, 1, 5));
 
+            Assert.AreEqual(0, budget);
+
+        }
 
     }
 }

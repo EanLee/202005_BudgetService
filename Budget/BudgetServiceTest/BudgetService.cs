@@ -18,6 +18,7 @@ namespace BudgetServiceTest
                 return 0m;
 
             var days = DateTime.DaysInMonth(start.Year, start.Month);
+
             var budget = StubBudgetRepo.GetAll()
                 .Where(x => x.Date == start.ToString("yyyyMM"))
                 .Select(x => x.Budget).FirstOrDefault();
