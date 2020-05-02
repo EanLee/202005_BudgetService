@@ -5,11 +5,11 @@ namespace BudgetServiceTest
 {
     public class BudgetService
     {
-        public IBudgetRepo StubBudgetRepo { get; }
+        private IBudgetRepo _budgetRepo;
 
-        public BudgetService(IBudgetRepo stubBudgetRepo)
+        public BudgetService(IBudgetRepo budgetRepo)
         {
-            this.StubBudgetRepo = stubBudgetRepo;
+            this._budgetRepo = budgetRepo;
         }
 
         public decimal Query(DateTime start, DateTime end)
@@ -17,33 +17,29 @@ namespace BudgetServiceTest
             if (end < start)
                 return 0m;
 
-            var beginMonth = start.Month;
-
             decimal totalBudget = 0m;
 
-            for (var month = start.Month; month <= end.Month; month++)
+            for (var beginDate = start; beginDate.AddDays(-beginDate.Day + 1).Date <= end.AddDays(-end.Day + 1).Date; beginDate = beginDate.AddMonths(1))
             {
-                var date = new DateTime(start.Year, month, 1);
-
-                var daysInMonth = DateTime.DaysInMonth(start.Year, month);
+                var daysInMonth = DateTime.DaysInMonth(beginDate.Year, beginDate.Month);
 
                 var startDay = 1;
-                if (month == start.Month)
+                if (beginDate.Month == start.Month)
                 {
                     startDay = start.Day;
                 }
 
                 var endDay = daysInMonth;
-                if (month == end.Month)
+                if (beginDate.Month == end.Month)
                 {
                     endDay = end.Day;
                 }
 
                 var queryDays = (endDay - startDay) + 1;
 
-                var budget = StubBudgetRepo.GetAll()
-                                           .Where(x => x.Date == date.ToString("yyyyMM"))
-                                           .Select(x => x.Budget).FirstOrDefault();
+                var budget = this._budgetRepo.GetAll()
+                                 .Where(x => x.Date == beginDate.ToString("yyyyMM"))
+                                 .Select(x => x.Budget).FirstOrDefault();
 
                 var money = budget / daysInMonth * queryDays;
 
