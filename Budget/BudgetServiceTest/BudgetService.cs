@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace BudgetServiceTest
 {
@@ -11,12 +12,20 @@ namespace BudgetServiceTest
             this.StubBudgetRepo = stubBudgetRepo;
         }
 
-        public decimal  Query(DateTime start, DateTime end)
+        public decimal Query(DateTime start, DateTime end)
         {
             if (end < start)
                 return 0m;
 
-            return 0;
+            var days = DateTime.DaysInMonth(start.Year, start.Month);
+
+            var budget = StubBudgetRepo.GetAll()
+                .Where(x => x.Date == start.ToString("yyyyMM"))
+                .Select(x => x.Budget).FirstOrDefault();
+
+            var queryDays = (end.Day - start.Day) + 1;
+
+            return (budget / days) * queryDays;
         }
     }
 }
