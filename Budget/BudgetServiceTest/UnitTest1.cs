@@ -1,6 +1,9 @@
 using System;
 using System.Diagnostics;
+using NSubstitute;
 using NUnit.Framework;
+using System.Linq;
+
 
 namespace BudgetServiceTest
 {
@@ -10,7 +13,16 @@ namespace BudgetServiceTest
 
         public Tests()
         {
-            IBudgetRepo _stubBudgetRepo =  NSubstitute.Substitute.For<IBudgetRepo>();
+            //List<BudgetEntity>
+            IBudgetRepo _stubBudgetRepo = NSubstitute.Substitute.For<IBudgetRepo>();
+            _stubBudgetRepo.GetAll().Returns(new System.Collections.Generic.List<BudgetEntity>
+            {
+                new BudgetEntity
+                {
+                     Date = "202004",
+                      Budget = 300,
+                }
+            });
             _budgetService = new BudgetService(_stubBudgetRepo);
         }
 
@@ -30,10 +42,10 @@ namespace BudgetServiceTest
         [Test]
         public void 單一日期()
         {
-            var budget = _budgetService.Query(new DateTime(2020, 4, 28), new DateTime(2020, 4, 1));
+            var budget = _budgetService.Query(new DateTime(2020, 4, 1), new DateTime(2020, 4, 1));
 
-            Assert.AreEqual(0m, budget);
- 
+            Assert.AreEqual(10, budget);
+
         }
     }
 }
