@@ -96,5 +96,13 @@ namespace BudgetServiceTest
 
             Assert.AreEqual(110m, budget);
         }
+
+        [Test]
+        public void 跨年_出現同月份()
+        {
+            var budget = _budgetService.Query(new DateTime(2020, 1, 31), new DateTime(2021, 4, 1));
+
+            Assert.AreEqual(6741m, budget);
+        }
     }
 }
