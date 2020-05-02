@@ -31,8 +31,8 @@ namespace BudgetServiceTest
                 var queryDays = (endDay - startDay) + 1;
 
                 var budget = this._budgetRepo.GetAll()
-                                 .Where(x => x.Date == curDate.ToString("yyyyMM"))
-                                 .Select(x => x.Budget).FirstOrDefault();
+                                 .Where(x => x.YearMonth == curDate.ToString("yyyyMM"))
+                                 .Select(x => x.Amount).FirstOrDefault();
 
                 var money = budget / daysInMonth * queryDays;
 

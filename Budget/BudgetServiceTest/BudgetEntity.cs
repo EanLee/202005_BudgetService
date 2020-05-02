@@ -2,7 +2,7 @@
 {
     public class BudgetEntity
     {
-        public string Date { get; set; }
-        public decimal Budget { get; set; }
+        public string YearMonth { get; set; }
+        public decimal Amount { get; set; }
     }
 }

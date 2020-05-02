@@ -17,28 +17,28 @@ namespace BudgetServiceTest
             {
                 new BudgetEntity
                 {
-                    Date = "202004",
-                    Budget = 300,
+                    YearMonth = "202004",
+                    Amount = 300,
                 },
                 new BudgetEntity
                 {
-                    Date = "202005",
-                    Budget = 31,
+                    YearMonth = "202005",
+                    Amount = 31,
                 },
                 new BudgetEntity
                 {
-                    Date = "202006",
-                    Budget = 3000,
+                    YearMonth = "202006",
+                    Amount = 3000,
                 },
                 new BudgetEntity
                 {
-                    Date = "202012",
-                    Budget = 3100,
+                    YearMonth = "202012",
+                    Amount = 3100,
                 },
                 new BudgetEntity
                 {
-                    Date = "202101",
-                    Budget = 310,
+                    YearMonth = "202101",
+                    Amount = 310,
                 }
             });
             _budgetService = new BudgetService(_stubBudgetRepo);
