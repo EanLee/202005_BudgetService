@@ -13,29 +13,29 @@ namespace BudgetServiceTest
         public Tests()
         {
             IBudgetRepo _stubBudgetRepo = NSubstitute.Substitute.For<IBudgetRepo>();
-            _stubBudgetRepo.GetAll().Returns(new System.Collections.Generic.List<BudgetEntity>
+            _stubBudgetRepo.GetAll().Returns(new System.Collections.Generic.List<Budget>
             {
-                new BudgetEntity
+                new Budget
                 {
                     YearMonth = "202004",
                     Amount = 300,
                 },
-                new BudgetEntity
+                new Budget
                 {
                     YearMonth = "202005",
                     Amount = 31,
                 },
-                new BudgetEntity
+                new Budget
                 {
                     YearMonth = "202006",
                     Amount = 3000,
                 },
-                new BudgetEntity
+                new Budget
                 {
                     YearMonth = "202012",
                     Amount = 3100,
                 },
-                new BudgetEntity
+                new Budget
                 {
                     YearMonth = "202101",
                     Amount = 310,

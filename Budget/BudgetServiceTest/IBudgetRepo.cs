@@ -4,6 +4,6 @@ namespace BudgetServiceTest
 {
     public interface IBudgetRepo
     {
-        public List<BudgetEntity> GetAll();
+        public List<Budget> GetAll();
     }
 }
