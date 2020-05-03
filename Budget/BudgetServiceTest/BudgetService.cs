@@ -19,24 +19,29 @@ namespace BudgetServiceTest
 
             decimal totalBudget = 0m;
 
-            for (var curDate = start;
-                curDate.AddDays(-curDate.Day + 1).Date <= end.AddDays(-end.Day + 1).Date;
-                curDate = curDate.AddMonths(1))
+            var curDate = new DateTime(start.Year, start.Month, 1);
+            var budgets = this._budgetRepo.GetAll();
+
+            while (curDate.Date <= end.Date)
             {
                 var daysInMonth = DateTime.DaysInMonth(curDate.Year, curDate.Month);
 
-                var startDay = curDate.Month == start.Month && curDate.Year == start.Year ? start.Day : 1;
-                var endDay = curDate.Month == end.Month && curDate.Year == end.Year ? end.Day : daysInMonth;
+                var startDate = curDate.Date < start.Date ? start : curDate;
+                var endDate = new DateTime(curDate.Year, curDate.Month, daysInMonth);
 
-                var queryDays = (endDay - startDay) + 1;
+                if (curDate.ToString("yyyyMM") == end.ToString("yyyyMM"))
+                {
+                    endDate = end;
+                }
 
-                var budget = this._budgetRepo.GetAll()
-                                 .Where(x => x.YearMonth == curDate.ToString("yyyyMM"))
-                                 .Select(x => x.Amount).FirstOrDefault();
+                var budget = budgets.Where(x => x.YearMonth == curDate.ToString("yyyyMM"))
+                                    .Select(x => x.Amount).FirstOrDefault();
+                var queryDays = (endDate - startDate).Days + 1;
 
                 var money = budget / daysInMonth * queryDays;
 
                 totalBudget += money;
+                curDate = curDate.AddMonths(1);
             }
 
             return totalBudget;
